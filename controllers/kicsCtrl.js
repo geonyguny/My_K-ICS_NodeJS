@@ -1,8 +1,5 @@
 const connection = require('../dbConfig')
 const readXlsxFile = require('read-excel-file/node')
-const xlsxReader = require('xlsx')
-const workbook = xlsxReader.readFile('sample.xlsx')
-
 
 //control get / insert
 const kicsCtrl = {
