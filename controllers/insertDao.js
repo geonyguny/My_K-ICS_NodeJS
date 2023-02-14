@@ -1,43 +1,20 @@
-// const connection = require('../dbConfig');
-const {pool} = require('../dbConfig');
+const { pool } = require("../dbConfig");
 const readXlsxFile = require('read-excel-file/node')
-
-//control get / insert
-exports.getKics = async function () {
-    try {
-        const connection = await pool.getConnection(async (conn) => conn);
-
-        try {
-            const getQuery = "SELECT * FROM LTerm_Risk_Shock;";
-
-            const [row] = await connection.query(getQuery);
-            connection.release();
-            return row;
-        } catch(err){
-            console.error(` ##### getUserRows Query error ##### `);
-            connection.release();
-            return false;
-        }
-    } catch (err) {
-        console.error(` ##### getUserRows DB error #####`);
-        return false;
-    }
-}
 
 exports.insertKics = async function () {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
 
-        try {
+        try{
             // 장기손보 원수/수재보험 CF엔진 산출데이터 불러오기
             readXlsxFile('KICS_DB.xlsx',{ sheet:1 }).then((rows) => {
                 rows.shift()       
                 let sql = 'INSERT INTO `LTerm_CF_DT` VALUES ?'
                 connection.query(sql,[rows],(error,response)=>{
                     console.log(error || response)       
-            })
+                })
             })     
-        
+                
             // 장기손보 출재보험 CF엔진 산출데이터 불러오기
             readXlsxFile('KICS_DB.xlsx',{ sheet:2 }).then((rows) => {
                 rows.shift()       
@@ -63,13 +40,15 @@ exports.insertKics = async function () {
                 connection.query(sql,[rows],(error,response)=>{
                     console.log(error || response)       
                 })
-            })
+            }) 
+            connection.release();
         } catch (err) {
-            console.error(" ##### 입력단계 오류 ##### ");
+            console.error(" ##### Insert from Excel Query Error ##### ");
+            connection.release();
             return false;
-        }
+          }
     } catch (err) {
-        console.error(" ##### DB접근 오류 ##### ");
+        console.error("##### DB Access Error #####");
         return false;
     }
-}
+};
