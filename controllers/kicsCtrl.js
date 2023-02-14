@@ -74,13 +74,14 @@ exports.insertKics = async function () {
                     console.log(error || response)       
                 })
             }) 
+            connection.release();
         } catch (err) {
-            console.error(" ##### insert Query error ##### ");
+            console.error(" ##### Insert from Excel Query Error ##### ");
             connection.release();
             return false;
           }
     } catch (err) {
-        console.error("##### insert DB error #####");
+        console.error("##### DB Access Error #####");
         return false;
     }
 };
@@ -90,7 +91,8 @@ exports.queryKics = async function () {
         const connection = await pool.getConnection(async (conn) => conn);
 
         try{
-        //SQL - 장기손보 대재해위험액 산출 - 노출비율, 계수 하드코딩 - LTerm_Risk_Cat 입력..        
+        //SQL - 장기손보 대재해위험액 산출 - 노출비율, 계수 하드코딩
+        //LTerm_Risk_Cat
         connection.query(
             `INSERT INTO LTerm_Risk_Cat 
             (SETL_YM, EXE_IDNO, DISE_RISK, BIG_DTH_RISK, BIG_OBS_RISK, BIG_PROP_RISK)
@@ -136,7 +138,8 @@ exports.queryKics = async function () {
             `
         );
 
-        // SQL - 장기손보 충격시나리오별 공정가치 산출 : LTerm_FV 입력
+        // SQL - 장기손보 보험/금리 충격시나리오별 공정가치 :
+        // LTerm_FV
         connection.query(
             `INSERT INTO LTerm_FV 
             (SETL_YM, EXE_IDNO, SHOCK_SCN_CD, KICS_LTPF_CD, RSV_AMT, PREM_AMT,RE_RSV_AMT,RE_PREM_AMT,CL_LOAN, LT_NAV)
@@ -162,6 +165,8 @@ exports.queryKics = async function () {
             `                                
         );
 
+        // SQL : 장기손보 보험/금리 충격리스크별 위험액 
+        // LTerm_Risk_Shock
         connection.query(
             `INSERT INTO LTerm_Risk_Shock 
             (SETL_YM, EXE_IDNO, LT_RISK_DEAD, LT_RISK_LONG, LT_RISK_FXCOMP, LT_RISK_PMCOMP, LT_RISK_PROP,
@@ -286,12 +291,14 @@ exports.queryKics = async function () {
                 GROUP BY SETL_YM, EXE_IDNO) AS B)
             )
             `
-        )	         
-        //SQL : 장기손보 합산위험액에 입력하는 쿼리 , LTerm_Risk_SUM 입력
+        );	         
+       
+        // SQL : 장기손보 세부위험 및 단순합산 위험액
+        // LTerm_Risk_SUM 입력
         connection.query(
             `INSERT INTO LTerm_Risk_SUM 
             (SETL_YM, EXE_IDNO, LT_RISK_DEAD, LT_RISK_LONG, LT_RISK_OBSDIS, LT_RISK_PROP,
-            LT_RISK_CANC, LT_RISK_BIZEXP, LT_RISK_CAT, LOW_RISK_SUM, DISP_EFCT, LT_RISK_SUM)
+            LT_RISK_CANC, LT_RISK_BIZEXP, LT_RISK_CAT, LT_RISK_SUM)
             VALUES(202212,1                                
             ,(SELECT LT_RISK_DEAD
                 FROM LTerm_RISK_SHOCK
@@ -319,7 +326,7 @@ exports.queryKics = async function () {
                 FROM LTerm_RISK_SHOCK
                 WHERE SETL_YM = 202212
                 AND EXE_IDNO = 1)	
-            ,(SELECT SQRT(POW(DISE_RISK,2)+POW((BIG_DTH_RISK+BIG_OBS_RISK+BIG_PROP_RISK),2))
+            ,(SELECT ROUND(SQRT(POW(DISE_RISK,2)+POW((BIG_DTH_RISK+BIG_OBS_RISK+BIG_PROP_RISK),2)),3)
                 FROM LTerm_Risk_Cat
                 WHERE SETL_YM = 202212
                 AND EXE_IDNO = 1)	
@@ -331,20 +338,157 @@ exports.queryKics = async function () {
                 FROM LTerm_RISK_SHOCK
                 WHERE SETL_YM = 202212
                 AND EXE_IDNO = 1)
-            ,2
-            ,3);	                      
-        `
-            )
+            );	                      
+            `
+        );
+        // SQL : 장기손보 요약 - 시가평가() 위험액
+        // LTerm_Risk_SUM 입력
+        connection.query(
+            `INSERT INTO LTerm_SUMMARY
+            (SETL_YM, EXE_IDNO, RSV_SUM, PREM_SUM, RE_RSV_SUM, RE_PREM_SUM, CL_LOAN_SUM, 
+                LT_RM, LT_RISK_DEAD, LT_RISK_LONG, LT_RISK_OBSDIS, LT_RISK_PROP, LT_RISK_CANC, 
+                LT_RISK_BIZEXP, LT_RISK_CAT, LT_RISK_SUM, LT_RISK_DVS, LT_RISK_FNL)
+            VALUES(202212,1                                
+            ,(SELECT SUM(RSV_AMT) FROM LTerm_FV
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1
+                GROUP BY SETL_YM,EXE_IDNO)
+            ,(SELECT SUM(PREM_AMT) FROM LTerm_FV
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1
+                GROUP BY SETL_YM,EXE_IDNO)
+            ,(SELECT SUM(RE_RSV_AMT) FROM LTerm_FV
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1
+                GROUP BY SETL_YM,EXE_IDNO)
+            ,(SELECT SUM(RE_PREM_AMT) FROM LTerm_FV
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1
+                GROUP BY SETL_YM,EXE_IDNO)
+            ,(SELECT SUM(CL_LOAN) FROM LTerm_FV
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1
+                GROUP BY SETL_YM,EXE_IDNO)
+            ,(SELECT (A.LT_RISK_SUM - A.LT_RISK_BIZEXP)*B.Z_85*B.Z_995
+                FROM LTerm_Risk_SUM A,
+                LTerm_Oth_DT B
+                WHERE A.SETL_YM=B.SETL_YM
+                AND A.EXE_IDNO=B.EXE_IDNO
+                AND A.SETL_YM=202212
+                AND A.EXE_IDNO=1)
+            ,(SELECT LT_RISK_DEAD FROM LTerm_Risk_SUM
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1)
+            ,(SELECT LT_RISK_LONG FROM LTerm_Risk_SUM
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1)
+            ,(SELECT LT_RISK_OBSDIS FROM LTerm_Risk_SUM
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1)
+            ,(SELECT LT_RISK_PROP FROM LTerm_Risk_SUM
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1)
+            ,(SELECT LT_RISK_CANC FROM LTerm_Risk_SUM
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1)
+            ,(SELECT LT_RISK_BIZEXP FROM LTerm_Risk_SUM
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1)
+            ,(SELECT LT_RISK_CAT FROM LTerm_Risk_SUM
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1)
+            ,(SELECT LT_RISK_SUM FROM LTerm_Risk_SUM
+                WHERE SETL_YM=202212
+                AND EXE_IDNO=1)
+            ,1
+            ,2)                
+             `   
+        );       
         } catch (err) {
-            console.error("##### insert DB error #####");
+            console.error(" ##### Insert From DB Query Error ##### ");
             return false;
         }
     }catch (err) {
-        console.error("##### insert DB error #####");
+        console.error("##### DB Access Error #####");
         return false;
     }
 }
 
+exports.deleteKics = async function () {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
 
+        try{
+        //SQL - LTerm_CF_DT 데이터 삭제
+        connection.query(
+            `DELETE FROM LTerm_CF_DT
+            WHERE SETL_YM = 202212
+            AND EXE_IDNO = 1`
+        ); 
+        
+        //SQL - LTerm_CF_CAT 데이터 삭제
+        connection.query(
+            `DELETE FROM LTerm_CAT_DT
+            WHERE SETL_YM = 202212
+            AND EXE_IDNO = 1`
+        ); 
+
+        //SQL - LTerm_FV 데이터 삭제
+        connection.query(
+            `DELETE FROM LTerm_FV
+            WHERE SETL_YM = 202212
+            AND EXE_IDNO = 1`
+        ); 
+
+        //SQL - LTerm_OTH_DT 데이터 삭제
+        connection.query(
+            `DELETE FROM LTerm_OTH_DT
+            WHERE SETL_YM = 202212
+            AND EXE_IDNO = 1`
+        ); 
+
+        //SQL - LTerm_RECF_DT 데이터 삭제
+        connection.query(
+            `DELETE FROM LTerm_RECF_DT
+            WHERE SETL_YM = 202212
+            AND EXE_IDNO = 1`
+        ); 
+
+        //SQL - LTerm_RISK_CAT 데이터 삭제
+        connection.query(
+            `DELETE FROM LTerm_RISK_CAT
+            WHERE SETL_YM = 202212
+            AND EXE_IDNO = 1`
+        ); 
+
+        //SQL - LTerm_RISK_SHOCK 데이터 삭제
+        connection.query(
+            `DELETE FROM LTerm_RISK_SHOCK
+            WHERE SETL_YM = 202212
+            AND EXE_IDNO = 1`
+        ); 
+
+        //SQL - LTerm_RISK_SUM 데이터 삭제
+        connection.query(
+            `DELETE FROM LTerm_RISK_SUM
+            WHERE SETL_YM = 202212
+            AND EXE_IDNO = 1`
+        ); 
+
+        //SQL - LTerm_SUMMARY 데이터 삭제
+        connection.query(
+            `DELETE FROM LTerm_SUMMARY
+            WHERE SETL_YM = 202212
+            AND EXE_IDNO = 1`
+        ); 
+        } catch (err) {
+            console.error(" ##### DELETE From DB Query Error ##### ");
+            return false;
+        }
+    }catch (err) {
+        console.error("##### DB Access Error #####");
+        return false;
+    }
+}
 // module.exports = kicsCtrl;
 
