@@ -8,7 +8,7 @@ const router = require("express").Router();
 
 router.route('/function')
     .get(LTCtrl.getKics)
-    // .post(insertDao.insertKics)    
+    .post(insertDao.insertKics)    
     .delete(deleteDao.deleteKics)    
     .post(queryDao.queryKics)
     // .post(LTCtrl.queryFVKics)
