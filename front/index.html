@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My K-ICS</title>
+    
+    <!-- 메타 태그 설정, 저자, 키워드, 설명 -->
+    <meta name="author" content="geony"/>
+    <meta name="keywords" content="신지급여력제도, K-ICS, 자본건전성"/>
+    <meta name="description" content="My K-ICS"/>
+
+    <!-- 파비콘 -->
+    <link rel="icon" href="./img/fabicon.ico">
+
+    <!-- 아이폰 파비콘 -->
+    <link rel="apple-touch-icon" href="./img/fabicon.ico">
+
+    <!-- font-awesome-icon -->
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" />
+
+    <!-- css -->
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./css/matrix.css">
+
+</head>
+<body>
+    <header>
+        <div class="inner">
+            <div class="header-container">
+                <div class="title">
+                    <a href="./index.html">My K-ICS</a>
+                </div>
+                <!-- title -->
+                <div class="sign-container">
+
+                    <!-- 비회원 -->
+                    <div class="unsigned">
+                        <div class="sign-in"><a href="./signin.html">로그인</a></div>
+                        <div class="sign-up"><a href="./signup.html">회원가입</a></div>
+                    </div>
+                    <!-- unsinged -->
+
+                    <!-- 회원 -->
+                    <div class="signed">
+                        <div class="dropdown">
+                            <div class="dropdown-button"></div>
+                                안녕하세요. <span id="nickname">홍길동</span>님.
+                                <i class="fa-solid fa-caret-down"></i>
+                                <!-- <i class="fa-duotone fa-caret-down"></i> -->
+                            <!-- dropdown-button -->
+                            <div class="dropdown-content">
+                                <button id="sign-out">로그아웃</button>
+                            </div>                         
+                            <!-- dropdown-content -->
+                        </div>
+                        <!-- dropdown -->
+                    </div>
+                    <!-- signed -->
+                </div>
+            </div>
+            <!-- header-container -->
+        </div>
+    </header>
+
+    <main>
+        <table>
+            <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Date of Birth</th>
+        
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>James</td>
+                <td>Matman</td>
+                <td>(713) 123-8965</td>
+                <td><a href="mailto:jmatman@stewart.com">jmatman@stewart.com</a></td>
+                <td>01/13/1979</td>
+            </tr>
+            <tr>
+                <td>Johnny</td>
+                <td>Smith</td>
+                <td>(713) 584-9614</td>
+                <td><a href="mailto:jsmith@stewart.com">jsmith@stewart.com</a></td>
+                <td>06/09/1971</td>
+            </tr>
+            <tr>
+                <td>Susan</td>
+                <td>Johnson</td>
+                <td>(713) 847-1124</td>
+                <td><a href="mailto:sjohnson@stewart.com">sjohnson@stewart.com</a></td>
+                <td>08/25/1965</td>
+            </tr>
+            <tr>
+                <td>Tracy</td>
+                <td>Richardson</td>
+                <td>(713) 245-4821</td>
+                <td><a href="mailto:trichard@stewart.com">trichard@stewart.com</a></td>
+                <td>03/13/1980</td>
+            </tr>
+            <tr>
+                <td>Tracy</td>
+                <td>Richardson</td>
+                <td>(713) 245-4821</td>
+                <td><a href="mailto:trichard@stewart.com">trichard@stewart.com</a></td>
+                <td>03/13/1980</td>
+            </tr>
+            <tr>
+                <td>Tracy</td>
+                <td>Richardson</td>
+                <td>(713) 245-4821</td>
+                <td><a href="mailto:trichard@stewart.com">trichard@stewart.com</a></td>
+                <td>03/13/1980</td>
+            </tr>
+            <tr>
+                <td>Tracy</td>
+                <td>Richardson</td>
+                <td>(713) 245-4821</td>
+                <td><a href="mailto:trichard@stewart.com">trichard@stewart.com</a></td>
+                <td>03/13/1980</td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <div class="inner">
+            <div class="footer-container">
+                <div class="author-email">email: purscean@gmail.com</div>
+            </div>
+        </div>
+
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js" integrity="sha512-L4lHq2JI/GoKsERT8KYa72iCwfSrKYWEyaBxzJeeITM9Lub5vlTj8tufqYk056exhjo2QDEipJrg6zen/DDtoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/index.js"></script>
+
+</body>
+</html>
