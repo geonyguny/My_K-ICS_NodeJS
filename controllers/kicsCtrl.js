@@ -1,37 +1,10 @@
-const fs = require('fs');
-const data = fs.readFileSync('./database.json');
-const conf = JSON.parse(data);
-const mysql = require("mysql2/promise");
+const { pool } = require("../dbConfig");
+const ejs = require('ejs')
+const express = require('express')
+const app = express()
+app.set('ejs',ejs.renderFile)
 
-const pool = mysql.createPool({
-    host : conf.host,
-    user : conf.user,
-    password : conf.password,
-    port : conf.port,
-    database : conf.database
-});
-const readXlsxFile = require('read-excel-file/node')
-
-//control get / insert
-exports.getKics = async function () {
-    try {
-        const connection = await pool.getConnection(async (conn) => conn);
-
-        try {
-            const selectQuery = "SELECT * FROM LTerm_Summary;";
-            const [row] = await connection.query(selectQuery);
-            connection.release();
-            console.log(row);
-            return row;
-        } catch (err) {
-            console.error(` ##### getUserRows Query error ##### `);
-            connection.release();
-            return false;
-        }
-    } catch (err) {
-        console.error(` ##### getUserRows DB error #####`);
-        return false;
-    }
+exports.getKics = async function (req,res) {
+    const[rows, fields] = await pool.query('SELECT * FROM LTerm_Summary');
+    res.render('form.ejs', {content: res})
 };
-
-
