@@ -31,7 +31,17 @@
                     <a>My K-ICS</a>
                 </div>
                 <!-- title -->
-               
+                <div class="upload-container">
+
+                    <form action="/import-excel" enctype="multipart/form-data" method="post">
+                        <input
+                          type="file"
+                          name="import-excel"
+                          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                        />
+                        <button type="submit" class="btn btn-dark" value="Store File"></button>
+                      </form>
+                </div>
             </div>
             <!-- header-container -->
         </div>
@@ -52,7 +62,7 @@
             <% for (let i in content ) { %>
             <tr>
                 <% let obj=content[i]; %>
-                <td><%= obj.RSV_SUM %></td>
+                <td>K-ICS 비율</td>
                 <td><%= obj.PREM_SUM %></td>
                 <td><%= obj.LT_RM %></td>
                 <td><%= obj.CL_LOAN_SUM %></td>
