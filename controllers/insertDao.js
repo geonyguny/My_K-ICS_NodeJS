@@ -18,7 +18,7 @@ exports.insertKics = async function () {
             })
             const uploadFile = multer({ storage: storage })
             app.get('/', (req, res) => {
-                res.sendFile(__dirname + '/index.html')
+                res.sendFile(__dirname + 'form.ejs')
             })
             app.post('/import-excel', uploadFile.single('import-excel'), (req, res) => {
                 importFileToDb(__basedir + '/uploads/' + req.file.filename)
