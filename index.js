@@ -13,13 +13,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors())
-
+app.use(express.static('public'));
 
 // 포트 체크
-const port = 4000;
-app.listen(port, () => {
-    console.log("Server", port)
-})
+app.listen(4000);
 
 // API 세팅
 app.use('/api/kics',require('./routes/kicsRouter'));
