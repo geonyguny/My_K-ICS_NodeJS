@@ -1,10 +1,18 @@
 const { pool } = require("../dbConfig");
 const readXlsxFile = require('read-excel-file/node');
+const ejs = require('ejs')
+const express = require('express');
+
+const app = express();
+app.set('view engine', 'ejs')
+app.set('views',__dirname+'/views')
+app.set('ejs',ejs.renderFile)
+
 
 // 조회화면
 exports.getKics = async function (req,res) {
     const[rows, fields] = await pool.query('SELECT * FROM LTerm_Summary');
-    res.render('form.ejs', {content: rows})
+    res.render('form.ejs', {content: rows});
 };
 
 // excel 데이터 DB 입력

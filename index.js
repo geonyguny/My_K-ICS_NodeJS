@@ -1,7 +1,6 @@
 // 모듈 require
 const express = require('express');
 const fs = require('fs');
-const ejs = require('ejs')
 const cors = require('cors');
 const multer = require('multer');
 const bodyParser = require('body-parser');
@@ -12,9 +11,6 @@ const queryDao = require("./controllers/queryDao");
 
 // express 서버 사용
 const app = express();
-app.set('view engine', 'ejs')
-app.set('views',__dirname+'/views')
-app.set('ejs',ejs.renderFile)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.json());
@@ -45,15 +41,10 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/form.ejs')
 })
 app.post('/import-excel', uploadFile.single('import-excel'), (req, res, next) => {
-  console.log('1')
   insertDao.insertKics(__dirname + '/uploads/' + req.file.filename)
-  console.log('2')
-  // queryDao.queryKics()
-  // console.log('3')
-  // insertDao.getKics()
-  // console.log('4')
-
 })
+
+
 
 // app.listen(4000);
 let nodeServer = app.listen(4000, function () {
