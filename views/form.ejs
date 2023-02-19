@@ -32,15 +32,10 @@
                 </div>
                 <!-- title -->
                 <div class="upload-container">
-
                     <form action="/import-excel" enctype="multipart/form-data" method="post">
-                        <input
-                          type="file"
-                          name="import-excel"
-                          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                        />
-                        <button type="submit" class="btn btn-dark" value="Store File"></button>
-                      </form>
+                        <div class = "chooseFile"><input type="file" name="import-excel" accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' ></div>
+                        <div class = "uploadExcel"><input type="submit" value="Upload Excel"></div>
+                    </form>  
                 </div>
             </div>
             <!-- header-container -->
@@ -83,8 +78,17 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js" integrity="sha512-L4lHq2JI/GoKsERT8KYa72iCwfSrKYWEyaBxzJeeITM9Lub5vlTj8tufqYk056exhjo2QDEipJrg6zen/DDtoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="./js/common.js"></script>
-    <script src="./js/index.js"></script>
+    <!-- <script src="./js/common.js"></script>
+    <script src="./js/index.js"></script> -->
 
 </body>
 </html>
+
+<!-- <form action="/import-excel" enctype="multipart/form-data" method="post">
+    <input
+        type="file"
+        name="import-excel"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+    />
+    <button type="submit" class="btn btn-dark" value="Store File"></button>
+</form> -->
