@@ -3,14 +3,11 @@ const express = require('express');
 const fs = require('fs');
 const ejs = require('ejs')
 const cors = require('cors');
-const path = require('path');
 const multer = require('multer');
-const readXlsxFile = require('read-excel-file/node');
 const bodyParser = require('body-parser');
-const { hostname } = require('os');
 const { pool } = require("./dbConfig");
-const router = express.Router();
 const insertDao = require("./controllers/insertDao");
+const queryDao = require("./controllers/queryDao");
 
 
 // express 서버 사용
@@ -27,14 +24,6 @@ app.use(express.static('public'));
 // API 세팅
 app.use('/api/kics',require('./routes/kicsRouter'));
 // app.use('/', router)
-
-// app.listen(4000);
-let nodeServer = app.listen(4000, function () {
-    let port = nodeServer.address().port
-    let host = nodeServer.address().address
-    console.log('App working on: ', host, port)
-})
-
 
 // upload
 pool.getConnection(function (err) {
@@ -56,9 +45,19 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/form.ejs')
 })
 app.post('/import-excel', uploadFile.single('import-excel'), (req, res, next) => {
-  res.status(200).send({
-      message: "Ok",
-      fileInfo: req.file
-  })
-  insertDao.insertKics(__dirname + '/uploads/' + req.file.filename)  
+  console.log('1')
+  insertDao.insertKics(__dirname + '/uploads/' + req.file.filename)
+  console.log('2')
+  // queryDao.queryKics()
+  // console.log('3')
+  // insertDao.getKics()
+  // console.log('4')
+
+})
+
+// app.listen(4000);
+let nodeServer = app.listen(4000, function () {
+    let port = nodeServer.address().port
+    let host = nodeServer.address().address
+    console.log('App working on: ', host, port)
 })
