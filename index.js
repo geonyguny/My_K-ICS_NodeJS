@@ -1,12 +1,12 @@
 // 모듈 require
 const express = require('express');
-const fs = require('fs');
+// const fs = require('fs');
 const cors = require('cors');
-const multer = require('multer');
+// const multer = require('multer');
 const bodyParser = require('body-parser');
-const { pool } = require("./dbConfig");
-const insertDao = require("./controllers/insertDao");
-const queryDao = require("./controllers/queryDao");
+// const { pool } = require("./dbConfig");
+// const insertDao = require("./controllers/insertDao");
+// const queryDao = require("./controllers/queryDao");
 
 
 // express 서버 사용
@@ -21,30 +21,8 @@ app.use(express.static('public'));
 app.use('/api/kics',require('./routes/kicsRouter'));
 // app.use('/', router)
 
-// upload
-pool.getConnection(function (err) {
-  if (err) {
-    return console.error('error: ' + err.message)
-  }
-  console.log('Database connected.')
-})
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null,  'uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
-});
-const uploadFile = multer({ storage: storage })
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/form.ejs')
-})
-app.post('/import-excel', uploadFile.single('import-excel'), (req, res, next) => {
-  insertDao.insertKics(__dirname + '/uploads/' + req.file.filename)
-})
-
-
+// 라우터
+// kicsRouter(app);
 
 // app.listen(4000);
 let nodeServer = app.listen(4000, function () {
