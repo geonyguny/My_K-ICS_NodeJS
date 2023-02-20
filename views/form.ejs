@@ -32,13 +32,28 @@
                 </div>
                 <!-- title -->
                 <div class="upload-container">
-                    <form action="/import-excel" enctype="multipart/form-data" method="post">
-                        <div class = "chooseFile"><input type="file" name="import-excel" accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' ></div>
-                        <div class = "uploadExcel"><input type="submit" value="Upload Excel"></div>
-                    </form>  
+                    <div>
+                        <form action="/getData" method="get">
+                            <input type="submit" value="조회" id="get">
+                        </form>
+                    </div>
+                    <div>
+                        <form action="/" method="post">
+                            <input type="submit" value="업로드" id="upload">
+                        </form>  
+                    </div>
+                    <div>
+                        <form action="/doQuery" method="post">
+                            <input type="submit" value="쿼리" id="sql">
+                        </form> 
+                    </div>
+                    <!-- <form action="/import-excel" enctype="multipart/form-data" method="post">
+                        <div class = "chooseFile"><input type="file" name="import-excel" id="file" accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel' ></div>
+                        <div class = "uploadExcel"><input type="submit" value="업로드" id="upload"></div>
+                    </form> 
                 </div>
             </div>
-            <!-- header-container -->
+            <-- header-container -->
         </div>
     </header>
 
@@ -60,7 +75,7 @@
                 <td>K-ICS 비율</td>
                 <td><%= obj.PREM_SUM %></td>
                 <td><%= obj.LT_RM %></td>
-                <td><%= obj.CL_LOAN_SUM %></td>
+                <td><%= obj.PREM_SUM - obj.LT_RM %></td>
             </tr>
             <% } %>
             </tbody>

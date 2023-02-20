@@ -53,21 +53,28 @@ header{
     display:flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: 1rem;
-    margin-bottom: 2rem;
+    margin-right: 10rem;
+    margin-bottom: 0rem;
 }
 
-.chooseFile{
-    display:flex;
-    align-items: center;
-    height: 0.5rem;
-    margin-top: 1.5rem;
-    margin-right: 1rem;
-}
+#get {
+    width:5rem;
+    height:2rem;
+    font-size:1rem;
+    margin-right: 0.3rem;
+  }
 
-.uploadExcel{
-    align-items: center;
-    height: 0.5rem;
-    margin-top: 1rem;
-    margin-right: 1rem;
-}
+#sql {
+    width:5rem;
+    height:2rem;
+    font-size:1rem;
+    margin-right: 0.3rem;
+  }
+  
+  #upload {
+    width:5rem;
+    height:2rem;
+    font-size:1rem;
+    margin-right: 0.3rem;
+  }
+  
