@@ -9,9 +9,7 @@ const router = require("express").Router();
 
 router.route('/')
     .get(insertDao.getKics)
-    // .post(uploadExcel.uploadExcel)    
     .delete(deleteDao.deleteKics)    
-    // .post(view.uploadExcel)  
     // .post(insertDao.insertKics)   
     .post(queryDao.queryKics)
 module.exports = router;

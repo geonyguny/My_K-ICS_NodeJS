@@ -208,7 +208,7 @@ exports.queryKics = async function () {
         );	         
        
         // SQL : 장기손보 세부위험 및 단순합산 위험액
-        // LTerm_Risk_SUM 입력
+        // LTerm_Risk_SUM
         connection.query(
             `INSERT INTO LTerm_Risk_SUM 
             (SETL_YM, EXE_IDNO, LT_RISK_DEAD, LT_RISK_LONG, LT_RISK_OBSDIS, LT_RISK_PROP,
@@ -255,30 +255,81 @@ exports.queryKics = async function () {
             );	                      
             `
         );
-        // SQL : 장기손보 요약 - 시가평가() 위험액
-        // LTerm_Risk_SUM 입력
+        // SQL : 장기손보 요약 - 시가평가, 위험액
+        // LTerm_SUMMARY
         connection.query(
             `INSERT INTO LTerm_SUMMARY
             (SETL_YM, EXE_IDNO, RSV_SUM, PREM_SUM, RE_RSV_SUM, RE_PREM_SUM, CL_LOAN_SUM, 
                 LT_RM, LT_RISK_DEAD, LT_RISK_LONG, LT_RISK_OBSDIS, LT_RISK_PROP, LT_RISK_CANC, 
                 LT_RISK_BIZEXP, LT_RISK_CAT, LT_RISK_SUM, LT_RISK_DVS, LT_RISK_FNL)
-            VALUES(202212,1                                
-            ,(SELECT SUM(RSV_AMT) FROM LTerm_FV
-                WHERE SETL_YM=202212
+            VALUES(202212 ,1
+
+            ,(SELECT A.RSV_SUM_BF - B.OR_RCBL_RSV + B.OR_PYBL_RSV - B.SU_RCBL_RSV + B.SU_PYBL_RSV
+            FROM 
+            (SELECT SUM(RSV_AMT) AS RSV_SUM_BF
+            FROM LTerm_FV
+            WHERE SETL_YM=202212
+            AND EXE_IDNO=1
+            GROUP BY SETL_YM,EXE_IDNO) AS A
+            ,(SELECT OR_RCBL_RSV
+            , OR_PYBL_RSV
+            , SU_RCBL_RSV
+            , SU_PYBL_RSV
+            FROM 
+            LTerm_Oth_DT
+            WHERE SETL_YM=202212
+            AND EXE_IDNO=1) AS B)
+
+            ,(SELECT A.PREM_SUM_BF - B.OR_RCBL_PREM + B.OR_PYBL_PREM - B.SU_RCBL_PREM + B.SU_PYBL_PREM
+            FROM 
+            (SELECT SUM(PREM_AMT) AS PREM_SUM_BF
+            FROM 
+            LTerm_FV
+            WHERE 
+            SETL_YM=202212
+            AND EXE_IDNO=1
+            GROUP BY SETL_YM,EXE_IDNO) AS A
+            ,(SELECT OR_RCBL_PREM
+                , OR_PYBL_PREM
+                , SU_RCBL_PREM
+                , SU_PYBL_PREM
+            FROM 
+            LTerm_Oth_DT
+            WHERE SETL_YM=202212
+            AND EXE_IDNO=1) AS B)
+
+            ,(SELECT A.RE_RSV_SUM_BF - B.RE_RCBL_RSV + B.RE_PYBL_RSV
+                FROM 
+                (SELECT SUM(RE_RSV_AMT) AS RE_RSV_SUM_BF
+                FROM 
+                LTerm_FV
+                WHERE 
+                SETL_YM=202212
                 AND EXE_IDNO=1
-                GROUP BY SETL_YM,EXE_IDNO)
-            ,(SELECT SUM(PREM_AMT) FROM LTerm_FV
+                GROUP BY SETL_YM,EXE_IDNO) AS A
+                ,(SELECT RE_RCBL_RSV
+                    , RE_PYBL_RSV
+                FROM 
+                LTerm_Oth_DT
                 WHERE SETL_YM=202212
+                AND EXE_IDNO=1) AS B)
+
+            ,(SELECT A.RE_PREM_SUM_BF - B.RE_RCBL_PREM + B.RE_PYBL_PREM
+                FROM 
+                (SELECT SUM(RE_PREM_AMT) AS RE_PREM_SUM_BF
+                FROM 
+                LTerm_FV
+                WHERE 
+                SETL_YM=202212
                 AND EXE_IDNO=1
-                GROUP BY SETL_YM,EXE_IDNO)
-            ,(SELECT SUM(RE_RSV_AMT) FROM LTerm_FV
+                GROUP BY SETL_YM,EXE_IDNO) AS A
+                ,(SELECT RE_RCBL_PREM
+                    , RE_PYBL_PREM
+                FROM 
+                LTerm_Oth_DT
                 WHERE SETL_YM=202212
-                AND EXE_IDNO=1
-                GROUP BY SETL_YM,EXE_IDNO)
-            ,(SELECT SUM(RE_PREM_AMT) FROM LTerm_FV
-                WHERE SETL_YM=202212
-                AND EXE_IDNO=1
-                GROUP BY SETL_YM,EXE_IDNO)
+                AND EXE_IDNO=1) AS B)
+
             ,(SELECT SUM(CL_LOAN) FROM LTerm_FV
                 WHERE SETL_YM=202212
                 AND EXE_IDNO=1
