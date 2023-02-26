@@ -75,10 +75,10 @@
             <% for (let i in content ) { %>
             <tr>
                 <% let obj=content[i]; %>
-                <td>K-ICS 비율</td>
-                <td><%= obj.PREM_SUM %></td>
-                <td><%= obj.LT_RM %></td>
-                <td><%= obj.PREM_SUM - obj.LT_RM %></td>
+                <td><%= obj.PRINT_NAME %></td>
+                <td><%= obj.PRINT_VALUE %></td>
+                <td><%= obj.PRINT_VALUE %></td>
+                <td><%= obj.PRINT_VALUE - obj.PRINT_VALUE %></td>
             </tr>
             <% } %>
             </tbody>

@@ -10,7 +10,7 @@ const router = require("express").Router();
 router.route('/')
     .get(insertDao.getKics)
     .delete(deleteDao.deleteKics)    
-    .post(insertDao.insertKics)   
-    // .post(queryDao.queryKics)
+    //.post(insertDao.insertKics)   
+    .post(queryDao.queryKics)
 module.exports = router;
 

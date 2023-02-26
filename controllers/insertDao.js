@@ -11,7 +11,7 @@ app.set('ejs',ejs.renderFile)
 
 // 조회화면
 exports.getKics = async function (req,res) {
-    const[rows, fields] = await pool.query('SELECT * FROM LTerm_Summary');
+    const[rows, fields] = await pool.query('SELECT * FROM kics_ratio');
     res.render('form.ejs', {content: rows});
 };
 
