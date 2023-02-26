@@ -72,13 +72,13 @@
             </tr>
             </thead>
             <tbody>
-            <% for (let i in content ) { %>
+            <% for (let i in contentComp ) { %>
             <tr>
-                <% let obj=content[i]; %>
+                <% let obj=contentComp[i]; %>
                 <td><%= obj.PRINT_NAME %></td>
-                <td align="right"><%= obj.PRINT_VALUE %></td>
-                <td align="right"><%= obj.PRINT_VALUE %></td>
-                <td align="right"><%= obj.PRINT_VALUE - obj.PRINT_VALUE %></td>
+                <td align="right"><%= obj.BASE_VALUE %></td>
+                <td align="right"><%= obj.COMP_VALUE %></td>
+                <td align="right"><%= obj.COMP_VALUE - obj.BASE_VALUE %></td>
             </tr>
             <% } %>
             </tbody>

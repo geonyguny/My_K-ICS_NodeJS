@@ -11,13 +11,18 @@ app.set('ejs',ejs.renderFile)
 
 // 조회화면
 exports.getKics = async function (req,res) {
-    const[rows, fields] = await pool.query(`
+    const[rowsBase, Bfields] = await pool.query(`
         SELECT * FROM kics_ratio
-        WHERE SETL_YM = 202112
-        AND EXE_IDNO = 1
+        WHERE SETL_YM = (SELECT SETL_YM FROM BASE_YM)
+        AND EXE_IDNO = (SELECT EXE_IDNO FROM BASE_YM)
         `);
+    const[rowsComp, Cfields] = await pool.query(`
+        SELECT * FROM kics_ratio
+        WHERE SETL_YM = (SELECT SETL_YM FROM COMP_YM)
+        AND EXE_IDNO = (SELECT EXE_IDNO FROM COMP_YM)
+    `);
     res.render('form.ejs', {
-        content: rows})
+        contentBase: rowsBase, contentComp: rowsComp})
         // .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')});
 };
 
