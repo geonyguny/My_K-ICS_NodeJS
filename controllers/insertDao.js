@@ -11,8 +11,14 @@ app.set('ejs',ejs.renderFile)
 
 // 조회화면
 exports.getKics = async function (req,res) {
-    const[rows, fields] = await pool.query('SELECT * FROM kics_ratio');
-    res.render('form.ejs', {content: rows});
+    const[rows, fields] = await pool.query(`
+        SELECT * FROM kics_ratio
+        WHERE SETL_YM = 202112
+        AND EXE_IDNO = 1
+        `);
+    res.render('form.ejs', {
+        content: rows})
+        // .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')});
 };
 
 // excel 데이터 DB 입력
