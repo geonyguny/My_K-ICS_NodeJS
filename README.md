@@ -5,3 +5,5 @@ MySQL, Nodejs, ejs, css
 
 ## API ##
 localhost:4000/api/kics
+
+get, delete, post(insertDao, queryDao)
