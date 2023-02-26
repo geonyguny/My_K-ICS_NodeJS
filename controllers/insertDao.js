@@ -96,8 +96,8 @@ exports.insertKics = async function (exFile) {
             }) 
             connection.release();
 
-               // 일반손보 재보험자산 기초데이터
-               readXlsxFile('KICS_DB.xlsx',{ sheet:8 }).then((rows) => {
+            // 일반손보 재보험자산 기초데이터
+            readXlsxFile('KICS_DB.xlsx',{ sheet:8 }).then((rows) => {
                 rows.shift()       
                 let sql = 'INSERT INTO `STerm_RE_DT` VALUES ?'
                 connection.query(sql,[rows],(error,response)=>{
@@ -106,10 +106,19 @@ exports.insertKics = async function (exFile) {
             }) 
             connection.release();
 
-               // 일반손보 보유리스크율 산출 기초데이터
-               readXlsxFile('KICS_DB.xlsx',{ sheet:9 }).then((rows) => {
+            // 일반손보 보유리스크율 산출 기초데이터
+            readXlsxFile('KICS_DB.xlsx',{ sheet:9 }).then((rows) => {
                 rows.shift()       
                 let sql = 'INSERT INTO `STerm_RTNRISK_DT` VALUES ?'
+                connection.query(sql,[rows],(error,response)=>{
+                    console.log(error || response)       
+                })
+            }) 
+
+            // 운영위험액 기초데이터
+            readXlsxFile('KICS_DB.xlsx',{ sheet:10 }).then((rows) => {
+                rows.shift()       
+                let sql = 'INSERT INTO `OPERATION_DT` VALUES ?'
                 connection.query(sql,[rows],(error,response)=>{
                     console.log(error || response)       
                 })

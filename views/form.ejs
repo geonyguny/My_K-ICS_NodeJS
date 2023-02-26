@@ -72,13 +72,13 @@
             </tr>
             </thead>
             <tbody>
-            <% for (let i in contentComp ) { %>
+            <% for (let i in contentBase ) { %>
             <tr>
-                <% let obj=contentComp[i]; %>
-                <td><%= obj.PRINT_NAME %></td>
-                <td align="right"><%= obj.BASE_VALUE %></td>
-                <td align="right"><%= obj.COMP_VALUE %></td>
-                <td align="right"><%= obj.COMP_VALUE - obj.BASE_VALUE %></td>
+                <% let Base=contentBase[i],Comp=contentComp[i] ; %>
+                <td><%= Base.PRINT_NAME %></td>
+                <td align="right"><%= Base.PRINT_VALUE %></td>
+                <td align="right"><%= Comp.PRINT_VALUE %></td>
+                <td align="right"><%= Base.PRINT_VALUE - Comp.PRINT_VALUE %></td>
             </tr>
             <% } %>
             </tbody>
@@ -97,7 +97,7 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js" integrity="sha512-L4lHq2JI/GoKsERT8KYa72iCwfSrKYWEyaBxzJeeITM9Lub5vlTj8tufqYk056exhjo2QDEipJrg6zen/DDtoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- <script src="./js/common.js"></script> -->
+    <script src="../js/common.js"></script>
     <!-- <script src="./js/index.js"></script> -->
 
 </body>
