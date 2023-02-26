@@ -1,7 +1,7 @@
 # My K-ICS
 
-### My little K-ICS system
+## My little K-ICS system ##
 MySQL, Nodejs, ejs, css
 
-##API
+## API ##
 localhost:4000/api/kics
