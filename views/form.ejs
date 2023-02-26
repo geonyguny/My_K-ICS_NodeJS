@@ -76,9 +76,9 @@
             <tr>
                 <% let Base=contentBase[i],Comp=contentComp[i] ; %>
                 <td><%= Base.PRINT_NAME %></td>
-                <td align="right"><%= Base.PRINT_VALUE %></td>
-                <td align="right"><%= Comp.PRINT_VALUE %></td>
-                <td align="right"><%= Base.PRINT_VALUE - Comp.PRINT_VALUE %></td>
+                <td align="right"><%= addComma(Base.PRINT_VALUE) %></td>
+                <td align="right"><%= addComma(Comp.PRINT_VALUE) %></td>
+                <td align="right"><%= addComma(Base.PRINT_VALUE - Comp.PRINT_VALUE) %></td>
             </tr>
             <% } %>
             </tbody>

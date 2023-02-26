@@ -7,6 +7,7 @@ const app = express();
 app.set('view engine', 'ejs')
 app.set('views',__dirname+'/views')
 app.set('ejs',ejs.renderFile)
+var func = require('../js/common')
 
 
 // 조회화면
@@ -22,7 +23,7 @@ exports.getKics = async function (req,res) {
         AND EXE_IDNO = (SELECT EXE_IDNO FROM COMP_YM)
     `);
     res.render('form.ejs', {
-        contentBase: rowsBase, contentComp: rowsComp})
+        contentBase: rowsBase, contentComp: rowsComp, addComma : func.commaFunc})
         // .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')});
 };
 
