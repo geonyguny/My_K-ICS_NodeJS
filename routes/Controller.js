@@ -5,8 +5,8 @@ const app = express()
 app.set('view engine', 'ejs')
 app.set('views',__dirname+'views')
 app.set('ejs',ejs.renderFile)
-const deleteDao = require("./deleteDao");
-const insertDao = require("./insertDao");
+const deleteDao = require("../dao/deleteDao");
+const insertDao = require("../dao/insertDao");
 const queryDao = require("./queryDao");
 
 // exports.getKics = async function (req,res){

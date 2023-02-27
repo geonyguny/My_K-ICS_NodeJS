@@ -7,7 +7,7 @@ const app = express();
 app.set('view engine', 'ejs')
 app.set('views',__dirname+'/views')
 app.set('ejs',ejs.renderFile)
-var func = require('../js/common')
+var func = require('../public/common')
 
 
 // 조회화면
