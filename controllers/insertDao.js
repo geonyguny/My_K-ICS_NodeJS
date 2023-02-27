@@ -124,6 +124,25 @@ exports.insertKics = async function (exFile) {
                     console.log(error || response)       
                 })
             }) 
+
+            // 신용위험액 기초데이터
+            readXlsxFile('KICS_DB.xlsx',{ sheet:11 }).then((rows) => {
+                rows.shift()       
+                let sql = 'INSERT INTO `CREDIT_DT` VALUES ?'
+                connection.query(sql,[rows],(error,response)=>{
+                    console.log(error || response)       
+                })
+            }) 
+
+            // 금리시나리오별 자산/부채 공정가치 기초데이터
+            readXlsxFile('KICS_DB.xlsx',{ sheet:12 }).then((rows) => {
+            rows.shift()       
+            let sql = 'INSERT INTO `ITR_FV_DT` VALUES ?'
+            connection.query(sql,[rows],(error,response)=>{
+                console.log(error || response)       
+            })
+        }) 
+
             connection.release();
         } catch (err) {
             console.error(" ##### Insert from Excel Query Error ##### ");
