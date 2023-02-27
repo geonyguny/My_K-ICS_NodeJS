@@ -3,7 +3,7 @@
 // const view = require("../index")
 const deleteDao = require("../controllers/deleteDao");
 const insertDao = require("../controllers/insertDao");
-const ASqueryDao = require("../controllers/ASqueryDao");
+const MKqueryDao = require("../controllers/MKqueryDao");
 const CRqueryDao = require("../controllers/CRqueryDao");
 const OPqueryDao = require("../controllers/OPqueryDao");
 const LTqueryDao = require("../controllers/LTqueryDao");
@@ -16,8 +16,8 @@ router.route('/')
     .delete(deleteDao.deleteKics)    
     //.post(insertDao.insertKics)   
     // .post(OPqueryDao.queryKics)
-    .post(CRqueryDao.queryKics)
-    // .post(ASqueryDao.queryKics)
+    // .post(CRqueryDao.queryKics)
+    .post(MKqueryDao.queryKics)
     // .post(LTqueryDao.queryKics)
     // .post(STqueryDao.queryKics)
 module.exports = router;
