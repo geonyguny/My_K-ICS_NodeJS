@@ -134,10 +134,18 @@ exports.insertKics = async function (exFile) {
                 })
             }) 
 
-            // 금리시나리오별 자산/부채 공정가치 기초데이터
+            // 가용자본/ 요구자본 수기데이터 입력
             readXlsxFile('KICS_DB.xlsx',{ sheet:12 }).then((rows) => {
+                rows.shift()       
+                let sql = 'INSERT INTO `SUGI_DT` VALUES ?'
+                connection.query(sql,[rows],(error,response)=>{
+                    console.log(error || response)       
+                })
+            })         
+            // 금리시나리오별 자산/부채 공정가치 기초데이터
+            readXlsxFile('KICS_DB.xlsx',{ sheet:13 }).then((rows) => {
             rows.shift()       
-            let sql = 'INSERT INTO `SUGI_DT` VALUES ?'
+            let sql = 'INSERT INTO `ITR_FV_DT` VALUES ?'
             connection.query(sql,[rows],(error,response)=>{
                 console.log(error || response)       
             })
