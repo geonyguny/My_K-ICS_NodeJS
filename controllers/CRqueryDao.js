@@ -6,7 +6,7 @@ exports.queryKics = async function () {
 
         try{
         // SQL - 신용위험액 :
-        // OPERATION_RISK
+        // CREDIT_RISK
         connection.query(
             `INSERT INTO credit_risk 
             (SETL_YM, EXE_IDNO, credit_risk)
