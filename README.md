@@ -1,4 +1,4 @@
-# My K-ICS
+# My K-ICS - Node.js
 
 ## My little K-ICS system ##
 MySQL, Nodejs, ejs, css
